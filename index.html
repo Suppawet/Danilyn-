@@ -23,27 +23,21 @@ h1 {
   padding: 0 20px;
 }
 
+/* 🖼️ รูป */
 #mainImage {
   width: 200px;
   border-radius: 15px;
   margin: 15px 0;
 }
 
-/* 🎥 FIXED CENTER VIDEO (100% CENTER SCREEN) */
+/* 🎥 วิดีโอ (แทนรูป) */
 #catDance {
-  width: 240px;
+  width: 200px;
   display: none;
-  border-radius: 12px;
-
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  z-index: 9999;
+  border-radius: 15px;
+  margin: 15px 0;
 }
 
-/* buttons */
 .buttons {
   position: relative;
   height: 300px;
@@ -93,10 +87,11 @@ button {
     tomorrow at 8 PM 🎬
   </h1>
 
+  <!-- 🖼️ รูปเดิม -->
   <img id="mainImage" src="your-image.jpg">
 
-  <!-- 🎥 Scuba Cat Video -->
-  <video id="catDance" autoplay loop muted playsinline>
+  <!-- 🎥 วิดีโอแทนรูป -->
+  <video id="catDance" loop muted playsinline>
     <source src="scuba-cat.mp4" type="video/mp4">
   </video>
 
@@ -120,7 +115,6 @@ let noClickCount = 0;
 
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const video = document.getElementById("catDance");
 const area = document.getElementById("btnArea");
 
 // ❌ No หนี
@@ -159,7 +153,7 @@ noBtn.addEventListener("click", (e) => {
   setTimeout(moveNo, 50);
 });
 
-// ✅ YES
+// ✅ YES → swap image → video
 function sayYes() {
   let yesSound = document.getElementById("yesSound");
   let music = document.getElementById("scubaMusic");
@@ -175,9 +169,11 @@ function sayYes() {
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
 
+  // ❌ ซ่อนรูป
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 show centered video
+  // ✅ แสดงวิดีโอ “แทนที่รูป”
+  const video = document.getElementById("catDance");
   video.style.display = "block";
   video.currentTime = 0;
   video.play();
