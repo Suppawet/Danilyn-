@@ -15,7 +15,7 @@ body {
 }
 
 .container {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 h1 {
@@ -23,11 +23,22 @@ h1 {
   padding: 0 20px;
 }
 
+#mainImage {
+  width: 200px;
+  border-radius: 15px;
+  margin: 15px 0;
+}
+
+#catDance {
+  width: 200px;
+  display: none;
+}
+
 .buttons {
   position: relative;
   height: 300px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 button {
@@ -45,7 +56,6 @@ button {
   color: white;
   left: 35%;
   top: 50%;
-  transform: scale(1);
 }
 
 #noBtn {
@@ -73,6 +83,9 @@ button {
     tomorrow at 8 PM 🎬
   </h1>
 
+  <img id="mainImage" src="your-image.jpg">
+  <img id="catDance" src="https://media.tenor.com/2roX3uxz_68AAAAC/cat-dance.gif">
+
   <div class="buttons" id="btnArea">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
     <button id="noBtn">No 😭</button>
@@ -80,9 +93,10 @@ button {
 
   <div id="result"></div>
 
-  <!-- 🔊 เสียง (เวอร์ชันมีม) -->
-  <audio id="yesSound" src="https://www.myinstants.com/media/sounds/yes-yes-yes-yes.mp3"></audio>
-  <audio id="noSound" src="https://www.myinstants.com/media/sounds/speed-please.mp3"></audio>
+  <!-- 🔊 เสียง -->
+  <audio id="yesSound" src="yes.mp3"></audio>
+  <audio id="noSound" src="no.mp3"></audio>
+  <audio id="scubaMusic" src="scuba.mp3" loop></audio>
 
 </div>
 
@@ -94,23 +108,21 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const area = document.getElementById("btnArea");
 
-// ❌ ปุ่ม No หนี (เฉพาะตอนกด)
+// ❌ No หนี
 function moveNo() {
   const maxX = area.clientWidth - noBtn.offsetWidth;
   const maxY = area.clientHeight - noBtn.offsetHeight;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 }
 
-// ❌ กด No → หนี + เสียง + ง้อ
 noBtn.addEventListener("click", (e) => {
-  e.preventDefault(); // กันกดทัน
+  e.preventDefault();
 
-  document.getElementById("noSound").play();
+  let sound = document.getElementById("noSound");
+  sound.currentTime = 0;
+  sound.play();
 
   noClickCount++;
 
@@ -126,48 +138,33 @@ noBtn.addEventListener("click", (e) => {
   document.getElementById("question").innerText =
     messages[Math.min(noClickCount, messages.length - 1)];
 
-  // ขยาย Yes
   yesSize += 0.3;
   yesBtn.style.transform = `scale(${yesSize})`;
 
-  // หนีหลังจากกด
   setTimeout(moveNo, 50);
 });
 
-// ✅ กด Yes
+// ✅ YES → ทุกอย่างระเบิด
 function sayYes() {
-  document.getElementById("yesSound").play();
+  let yesSound = document.getElementById("yesSound");
+  let music = document.getElementById("scubaMusic");
+
+  yesSound.currentTime = 0;
+  yesSound.play();
+
+  // เล่นเพลง scuba ต่อ
+  setTimeout(() => {
+    music.currentTime = 0;
+    music.play();
+  }, 800);
 
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
 
-  for (let i = 0; i < 20; i++) {
-    createHeart();
-  }
+  // เปลี่ยนรูปเป็นแมว
+  document.getElementById("mainImage").style.display = "none";
+  document.getElementById("catDance").style.display = "block";
 }
-
-// 💙 หัวใจลอย
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.innerText = "💙";
-  heart.style.position = "fixed";
-  heart.style.left = Math.random() * window.innerWidth + "px";
-  heart.style.top = window.innerHeight + "px";
-  heart.style.fontSize = "24px";
-  heart.style.animation = "floatUp 2s linear";
-  document.body.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 2000);
-}
-
-// animation
-const style = document.createElement("style");
-style.innerHTML = `
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-300px); opacity: 0; }
-}`;
-document.head.appendChild(style);
 </script>
 
 </body>
