@@ -9,104 +9,111 @@ body {
   margin: 0;
   font-family: Arial;
   background: #cceeff;
-
-  /* 🔥 สำคัญที่สุด: ทำทั้งหน้าเป็น flex center */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  height: 100vh;
-  overflow: hidden;
 }
 
+/* 🧠 ล็อกทั้งหน้ากลางจริง */
+.stage {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 📝 ข้อความ */
 h1 {
   color: #0077cc;
   text-align: center;
-  padding: 10px;
+  margin: 10px;
 }
 
-/* 🎯 media อยู่กลางจริง 100% */
-.media-box {
+/* 🎯 กล่องรูป/วิดีโอ (กลางจริง) */
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 220px;
 }
 
+/* 🖼️ + 🎥 */
 #mainImage,
 #catDance {
   width: 200px;
   border-radius: 15px;
 }
 
-/* 🎥 ซ่อนวิดีโอ */
+/* 🎥 ซ่อนก่อน */
 #catDance {
   display: none;
 }
 
-/* ปุ่ม */
+/* 🔘 ปุ่ม */
 .buttons {
   margin-top: 20px;
   position: relative;
   width: 300px;
-  height: 120px;
+  height: 100px;
 }
 
 button {
   padding: 15px 30px;
-  font-size: 18px;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
   position: absolute;
+  cursor: pointer;
 }
 
 #yesBtn {
+  left: 0;
   background: #28a745;
   color: white;
-  left: 0;
 }
 
 #noBtn {
+  right: 0;
   background: #dc3545;
   color: white;
-  right: 0;
 }
 
 #result {
   margin-top: 15px;
-  font-size: 22px;
+  font-size: 20px;
   color: #0077cc;
-  font-weight: bold;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="question">
-You are invited to watch a movie with <br>
-<b>Namo Suppawet</b> <br>
-tomorrow at 8 PM 🎬
-</h1>
+<div class="stage">
 
-<!-- 🎯 กลางจริง -->
-<div class="media-box">
-  <img id="mainImage" src="your-image.jpg">
+  <h1 id="question">
+    You are invited to watch a movie with <br>
+    <b>Namo Suppawet</b> <br>
+    tomorrow at 8 PM 🎬
+  </h1>
 
-  <video id="catDance" loop muted playsinline>
-    <source src="scuba-cat.mp4" type="video/mp4">
-  </video>
+  <!-- 🎯 รูป/วิดีโออยู่กลางจริง -->
+  <div class="center">
+    <img id="mainImage" src="your-image.jpg">
+
+    <video id="catDance" loop muted playsinline>
+      <source src="scuba-cat.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- 🔘 ปุ่ม -->
+  <div class="buttons">
+    <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
+    <button id="noBtn">No 😭</button>
+  </div>
+
+  <div id="result"></div>
+
 </div>
 
-<div class="buttons">
-  <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
-  <button id="noBtn">No 😭</button>
-</div>
-
-<div id="result"></div>
-
+<!-- 🔊 เสียง -->
 <audio id="yesSound" src="yes.mp3"></audio>
 <audio id="noSound" src="no.mp3"></audio>
 <audio id="scubaMusic" src="scuba.mp3" loop></audio>
@@ -118,21 +125,22 @@ const area = document.querySelector(".buttons");
 
 let noClick = 0;
 
+// ❌ No หนี
 noBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
   document.getElementById("noSound").play();
 
-  const messages = [
+  const msgs = [
     "Really? 🥺",
     "Think again 😭",
     "Come on...",
     "Please 😢",
-    "Just say yes 💔"
+    "Just say yes 💙"
   ];
 
   document.getElementById("question").innerText =
-    messages[Math.min(noClick, messages.length - 1)];
+    msgs[Math.min(noClick, msgs.length - 1)];
 
   noClick++;
 
@@ -140,6 +148,7 @@ noBtn.addEventListener("click", (e) => {
   noBtn.style.left = Math.random() * maxX + "px";
 });
 
+// ✅ YES → swap
 function sayYes() {
   document.getElementById("yesSound").play();
 
@@ -150,8 +159,10 @@ function sayYes() {
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow 🎬";
 
+  // 🖼️ ซ่อนรูป
   document.getElementById("mainImage").style.display = "none";
 
+  // 🎥 โชว์วิดีโอแทน
   const v = document.getElementById("catDance");
   v.style.display = "block";
   v.currentTime = 0;
