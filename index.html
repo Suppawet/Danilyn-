@@ -9,9 +9,10 @@ body {
   margin: 0;
   font-family: Arial;
   background: #cceeff;
+  overflow: hidden;
 }
 
-/* 🧠 จัดทั้งหน้า */
+/* 🧠 หน้าเริ่ม */
 .stage {
   height: 100vh;
   display: flex;
@@ -20,35 +21,18 @@ body {
   align-items: center;
 }
 
-/* 📝 ข้อความ */
+/* 📝 ข้อความเริ่ม */
 h1 {
   color: #0077cc;
   text-align: center;
-  margin-bottom: 10px;
 }
 
-/* 🎯 SLOT FIX (สำคัญที่สุด) */
-.media-slot {
-  width: 200px;
-  height: 200px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin: 10px 0;
-}
-
-/* 🖼️ + 🎥 อยู่ใน slot เดียวกัน */
-#mainImage,
+/* 🎥 แมว */
 #catDance {
   width: 200px;
-  border-radius: 15px;
-}
-
-/* 🎥 ซ่อนก่อน */
-#catDance {
   display: none;
+  border-radius: 15px;
+  transition: all 0.8s ease;
 }
 
 /* 🔘 ปุ่ม */
@@ -56,7 +40,7 @@ h1 {
   position: relative;
   width: 300px;
   height: 100px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 button {
@@ -64,31 +48,35 @@ button {
   border: none;
   border-radius: 10px;
   position: absolute;
+  cursor: pointer;
 }
 
-#yesBtn {
-  left: 0;
-  background: #28a745;
-  color: white;
-}
+#yesBtn { left: 0; background: #28a745; color: white; }
+#noBtn { right: 0; background: #dc3545; color: white; }
 
-#noBtn {
-  right: 0;
-  background: #dc3545;
-  color: white;
-}
-
+/* 🎉 result (จะเหลืออันเดียวตอนจบ) */
 #result {
-  margin-top: 10px;
-  font-size: 20px;
+  margin-top: 15px;
+  font-size: 24px;
   color: #0077cc;
+  font-weight: bold;
+  display: none;
+}
+
+/* 💥 ZOOM MODE หลัง YES */
+.zoom {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2.2);
+  z-index: 9999;
 }
 </style>
 </head>
 
 <body>
 
-<div class="stage">
+<div class="stage" id="stage">
 
   <h1 id="question">
     You are invited to watch a movie with <br>
@@ -96,41 +84,32 @@ button {
     tomorrow at 8 PM 🎬
   </h1>
 
-  <!-- 🎯 SLOT เดียว = ไม่ทับแน่นอน -->
-  <div class="media-slot">
+  <img id="mainImage" src="your-image.jpg">
 
-    <img id="mainImage" src="your-image.jpg">
+  <video id="catDance" loop muted playsinline>
+    <source src="scuba-cat.mp4" type="video/mp4">
+  </video>
 
-    <video id="catDance" loop muted playsinline>
-      <source src="scuba-cat.mp4" type="video/mp4">
-    </video>
-
-  </div>
-
-  <div class="buttons">
+  <div class="buttons" id="buttons">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
     <button id="noBtn">No 😭</button>
   </div>
 
-  <div id="result"></div>
+  <div id="result">YAYYY 💙 See you tomorrow 😆🎬</div>
 
 </div>
 
 <audio id="yesSound" src="yes.mp3"></audio>
-<audio id="noSound" src="no.mp3"></audio>
 <audio id="scubaMusic" src="scuba.mp3" loop></audio>
 
 <script>
 const noBtn = document.getElementById("noBtn");
-const area = document.querySelector(".buttons");
+const yesBtn = document.getElementById("yesBtn");
 
 let noClick = 0;
 
-noBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  document.getElementById("noSound").play();
-
+// ❌ No หนี
+noBtn.addEventListener("click", () => {
   const msgs = [
     "Really? 🥺",
     "Think again 😭",
@@ -144,11 +123,12 @@ noBtn.addEventListener("click", (e) => {
 
   noClick++;
 
+  const area = document.querySelector(".buttons");
   const maxX = area.clientWidth - noBtn.offsetWidth;
   noBtn.style.left = Math.random() * maxX + "px";
 });
 
-// ✅ YES → swap ใน slot เดียว
+// ✅ YES → ZOOM + CLEAR SCREEN
 function sayYes() {
   document.getElementById("yesSound").play();
 
@@ -156,15 +136,22 @@ function sayYes() {
     document.getElementById("scubaMusic").play();
   }, 500);
 
-  document.getElementById("result").innerText =
-    "YAYYY 💙 See you tomorrow 🎬";
-
+  // 💥 ล้างทุกอย่างออก
+  document.getElementById("question").style.display = "none";
   document.getElementById("mainImage").style.display = "none";
+  document.getElementById("buttons").style.display = "none";
 
-  const v = document.getElementById("catDance");
-  v.style.display = "block";
-  v.currentTime = 0;
-  v.play();
+  // 🎥 show video
+  const video = document.getElementById("catDance");
+  video.style.display = "block";
+  video.currentTime = 0;
+  video.play();
+
+  // 🎯 zoom effect
+  video.classList.add("zoom");
+
+  // 🎉 show final text
+  document.getElementById("result").style.display = "block";
 }
 </script>
 
