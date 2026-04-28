@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Valentine 💖</title>
+<title>Movie Invite 💙</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial;
   text-align: center;
-  background: linear-gradient(to bottom right, #ff9ccf, #ffc1e3);
+  background: #cceeff;
   height: 100vh;
   overflow: hidden;
 }
@@ -19,16 +19,9 @@ body {
 }
 
 h1 {
-  color: #d63384;
+  color: #0077cc;
   transition: 0.3s;
-}
-
-img {
-  width: 150px;
-  height: 150px;
-  border-radius: 20px;
-  object-fit: cover;
-  margin: 20px 0;
+  padding: 0 20px;
 }
 
 .buttons {
@@ -64,46 +57,29 @@ button {
 #result {
   margin-top: 20px;
   font-size: 24px;
-  color: white;
+  color: #0077cc;
   font-weight: bold;
 }
-
-.upload {
-  margin-top: 15px;
-}
-
-input {
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1 id="question">Will you be my Valentine? 💖</h1>
-
-  <img id="preview" src="https://via.placeholder.com/150">
-
-  <div class="upload">
-    <input type="file" id="imgInput"><br><br>
-    <input type="text" id="textInput" placeholder="เปลี่ยนข้อความ">
-    <button onclick="changeText()">เปลี่ยน</button>
-  </div>
+  <h1 id="question">
+    You are invited to watch a movie with <br>
+    <b>Namo Suppawet</b> <br>
+    tomorrow at 8 PM 🎬
+  </h1>
 
   <div class="buttons">
-    <button id="yesBtn" onclick="sayYes()">Yes 💖</button>
+    <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
     <button id="noBtn">No 😭</button>
   </div>
 
   <div id="result"></div>
 
-  <!-- เสียง -->
   <audio id="loveSound" src="https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3"></audio>
-
 </div>
 
 <script>
@@ -113,53 +89,50 @@ let noClickCount = 0;
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 
-// ❌ ปุ่ม No วิ่งหนี
-noBtn.addEventListener("mouseover", moveNo);
-
-function moveNo() {
+// No button runs away
+noBtn.addEventListener("mouseover", () => {
   const x = Math.random() * (window.innerWidth - 100);
   const y = Math.random() * (window.innerHeight - 100);
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-}
+});
 
-// ❌ กด No → ง้อ + Yes ใหญ่ขึ้น
+// Clicking No → messages + Yes grows
 noBtn.addEventListener("click", () => {
   noClickCount++;
 
   const messages = [
-    "จริงเหรอ 🥺",
-    "คิดดีๆ นะ 😭",
-    "เค้าเสียใจนะ...",
-    "อย่ากดเลยยย 😢",
-    "ขออีกทีได้ไหม 💔",
-    "Pleaseeeee 🥺💖"
+    "Really? 🥺",
+    "Think again 😭",
+    "Come watch with me...",
+    "I really want to go with you 😢",
+    "One more chance? 💔",
+    "Pleaseeee 🥺💙"
   ];
 
   document.getElementById("question").innerText =
     messages[Math.min(noClickCount, messages.length - 1)];
 
-  // ขยายปุ่ม Yes
   yesSize += 0.3;
   yesBtn.style.transform = `scale(${yesSize})`;
 });
 
-// ✅ กด Yes
+// Yes clicked
 function sayYes() {
-  document.getElementById("result").innerText = "YAYYYY 💖 I LOVE YOU 😭💘";
+  document.getElementById("result").innerText =
+    "Yayyy 💙 See you tomorrow at 8 PM 😆🎬";
   document.getElementById("loveSound").play();
 
-  // เอฟเฟกต์หัวใจ
   for (let i = 0; i < 20; i++) {
     createHeart();
   }
 }
 
-// 💕 สร้างหัวใจลอย
+// Floating hearts
 function createHeart() {
   const heart = document.createElement("div");
-  heart.innerText = "💖";
+  heart.innerText = "💙";
   heart.style.position = "fixed";
   heart.style.left = Math.random() * window.innerWidth + "px";
   heart.style.top = window.innerHeight + "px";
@@ -172,7 +145,7 @@ function createHeart() {
   }, 2000);
 }
 
-// 🎞 animation
+// animation
 const style = document.createElement("style");
 style.innerHTML = `
 @keyframes floatUp {
@@ -186,24 +159,6 @@ style.innerHTML = `
   }
 }`;
 document.head.appendChild(style);
-
-// 🖼 อัปโหลดรูป
-document.getElementById("imgInput").addEventListener("change", function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      document.getElementById("preview").src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// ✏️ เปลี่ยนข้อความ
-function changeText() {
-  const text = document.getElementById("textInput").value;
-  document.getElementById("question").innerText = text;
-}
 </script>
 
 </body>
