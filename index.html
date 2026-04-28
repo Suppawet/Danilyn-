@@ -14,6 +14,7 @@ body {
   overflow: hidden;
 }
 
+/* 🧩 container หลัก */
 .container {
   margin-top: 20px;
 }
@@ -23,19 +24,26 @@ h1 {
   padding: 0 20px;
 }
 
-/* 🖼️ รูป */
-#mainImage {
-  width: 200px;
-  border-radius: 15px;
+/* 🎯 กลางจอแบบแท้ (สำคัญที่สุด) */
+.media-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin: 15px 0;
+  height: 220px;
 }
 
-/* 🎥 วิดีโอ (แทนรูป) */
+/* 🖼️ รูป + 🎥 วิดีโอ */
+#mainImage,
 #catDance {
   width: 200px;
-  display: none;
   border-radius: 15px;
-  margin: 15px 0;
+}
+
+/* 🎥 วิดีโอเริ่มซ่อน */
+#catDance {
+  display: none;
 }
 
 .buttons {
@@ -87,13 +95,16 @@ button {
     tomorrow at 8 PM 🎬
   </h1>
 
-  <!-- 🖼️ รูปเดิม -->
-  <img id="mainImage" src="your-image.jpg">
+  <!-- 🎯 media center box -->
+  <div class="media-box">
 
-  <!-- 🎥 วิดีโอแทนรูป -->
-  <video id="catDance" loop muted playsinline>
-    <source src="scuba-cat.mp4" type="video/mp4">
-  </video>
+    <img id="mainImage" src="your-image.jpg">
+
+    <video id="catDance" loop muted playsinline>
+      <source src="scuba-cat.mp4" type="video/mp4">
+    </video>
+
+  </div>
 
   <div class="buttons" id="btnArea">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
@@ -117,7 +128,6 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const area = document.getElementById("btnArea");
 
-// ❌ No หนี
 function moveNo() {
   const maxX = area.clientWidth - noBtn.offsetWidth;
   const maxY = area.clientHeight - noBtn.offsetHeight;
@@ -169,10 +179,10 @@ function sayYes() {
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
 
-  // ❌ ซ่อนรูป
+  // 🖼️ hide image
   document.getElementById("mainImage").style.display = "none";
 
-  // ✅ แสดงวิดีโอ “แทนที่รูป”
+  // 🎥 show video in same position
   const video = document.getElementById("catDance");
   video.style.display = "block";
   video.currentTime = 0;
