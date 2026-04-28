@@ -29,9 +29,11 @@ h1 {
   margin: 15px 0;
 }
 
+/* 🎥 วิดีโอแมว */
 #catDance {
-  width: 200px;
+  width: 220px;
   display: none;
+  border-radius: 12px;
 }
 
 .buttons {
@@ -85,8 +87,10 @@ button {
 
   <img id="mainImage" src="your-image.jpg">
 
-  <!-- 🐱 Scuba Cat (FINAL CONFIRMED) -->
-  <img id="catDance" src="https://media.tenor.com/4yK3xQ7bQ4oAAAAC/cat-scuba-diving.gif">
+  <!-- 🎥 Scuba Cat Video -->
+  <video id="catDance" autoplay loop muted playsinline>
+    <source src="scuba-cat.mp4" type="video/mp4">
+  </video>
 
   <div class="buttons" id="btnArea">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
@@ -95,7 +99,7 @@ button {
 
   <div id="result"></div>
 
-  <!-- 🔊 เสียง -->
+  <!-- 🔊 เสียง (ของเธอเอง) -->
   <audio id="yesSound" src="yes.mp3"></audio>
   <audio id="noSound" src="no.mp3"></audio>
   <audio id="scubaMusic" src="scuba.mp3" loop></audio>
@@ -146,7 +150,7 @@ noBtn.addEventListener("click", (e) => {
   setTimeout(moveNo, 50);
 });
 
-// ✅ YES → show cat + play music
+// ✅ YES
 function sayYes() {
   let yesSound = document.getElementById("yesSound");
   let music = document.getElementById("scubaMusic");
@@ -163,7 +167,14 @@ function sayYes() {
     "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
 
   document.getElementById("mainImage").style.display = "none";
+
+  // 🎥 show video
   document.getElementById("catDance").style.display = "block";
+
+  // 🔁 restart video every time (กันค้าง)
+  const video = document.getElementById("catDance");
+  video.currentTime = 0;
+  video.play();
 }
 </script>
 
