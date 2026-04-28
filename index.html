@@ -12,6 +12,9 @@ body {
   background: #cceeff;
   height: 100vh;
   overflow: hidden;
+
+  /* ✅ สำคัญ: ทำให้ layout อ้างอิงทั้งหน้า */
+  position: relative;
 }
 
 .container {
@@ -29,16 +32,18 @@ h1 {
   margin: 15px 0;
 }
 
-/* 🎥 Scuba Cat Video (CENTER FIXED) */
+/* 🎥 VIDEO (CENTER FIXED 100%) */
 #catDance {
   width: 240px;
   display: none;
   border-radius: 12px;
 
   position: absolute;
-  top: 45%;
+  top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
 .buttons {
@@ -117,6 +122,7 @@ let noClickCount = 0;
 
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const video = document.getElementById("catDance");
 const area = document.getElementById("btnArea");
 
 // ❌ No หนี
@@ -159,7 +165,6 @@ noBtn.addEventListener("click", (e) => {
 function sayYes() {
   let yesSound = document.getElementById("yesSound");
   let music = document.getElementById("scubaMusic");
-  let video = document.getElementById("catDance");
 
   yesSound.currentTime = 0;
   yesSound.play();
@@ -174,7 +179,7 @@ function sayYes() {
 
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 show + reset video
+  // 🎥 show video centered
   video.style.display = "block";
   video.currentTime = 0;
   video.play();
