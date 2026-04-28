@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(to bottom right, #ff9ccf, #ffc1e3);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  margin-top: 40px;
+}
+
+h1 {
+  color: #d63384;
+  transition: 0.3s;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin: 20px 0;
+}
+
+.buttons {
+  position: relative;
+  height: 250px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  transition: 0.2s;
+}
+
+#yesBtn {
+  background: #28a745;
+  color: white;
+  left: 40%;
+  top: 50%;
+  transform: scale(1);
+}
+
+#noBtn {
+  background: #dc3545;
+  color: white;
+  left: 55%;
+  top: 50%;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+}
+
+.upload {
+  margin-top: 15px;
+}
+
+input {
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="question">Will you be my Valentine? 💖</h1>
+
+  <img id="preview" src="https://via.placeholder.com/150">
+
+  <div class="upload">
+    <input type="file" id="imgInput"><br><br>
+    <input type="text" id="textInput" placeholder="เปลี่ยนข้อความ">
+    <button onclick="changeText()">เปลี่ยน</button>
+  </div>
+
+  <div class="buttons">
+    <button id="yesBtn" onclick="sayYes()">Yes 💖</button>
+    <button id="noBtn">No 😭</button>
+  </div>
+
+  <div id="result"></div>
+
+  <!-- เสียง -->
+  <audio id="loveSound" src="https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3"></audio>
+
+</div>
+
+<script>
+let yesSize = 1;
+let noClickCount = 0;
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+// ❌ ปุ่ม No วิ่งหนี
+noBtn.addEventListener("mouseover", moveNo);
+
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+// ❌ กด No → ง้อ + Yes ใหญ่ขึ้น
+noBtn.addEventListener("click", () => {
+  noClickCount++;
+
+  const messages = [
+    "จริงเหรอ 🥺",
+    "คิดดีๆ นะ 😭",
+    "เค้าเสียใจนะ...",
+    "อย่ากดเลยยย 😢",
+    "ขออีกทีได้ไหม 💔",
+    "Pleaseeeee 🥺💖"
+  ];
+
+  document.getElementById("question").innerText =
+    messages[Math.min(noClickCount, messages.length - 1)];
+
+  // ขยายปุ่ม Yes
+  yesSize += 0.3;
+  yesBtn.style.transform = `scale(${yesSize})`;
+});
+
+// ✅ กด Yes
+function sayYes() {
+  document.getElementById("result").innerText = "YAYYYY 💖 I LOVE YOU 😭💘";
+  document.getElementById("loveSound").play();
+
+  // เอฟเฟกต์หัวใจ
+  for (let i = 0; i < 20; i++) {
+    createHeart();
+  }
+}
+
+// 💕 สร้างหัวใจลอย
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.innerText = "💖";
+  heart.style.position = "fixed";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+  heart.style.fontSize = "24px";
+  heart.style.animation = "floatUp 2s linear";
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 2000);
+}
+
+// 🎞 animation
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-300px);
+    opacity: 0;
+  }
+}`;
+document.head.appendChild(style);
+
+// 🖼 อัปโหลดรูป
+document.getElementById("imgInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      document.getElementById("preview").src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// ✏️ เปลี่ยนข้อความ
+function changeText() {
+  const text = document.getElementById("textInput").value;
+  document.getElementById("question").innerText = text;
+}
+</script>
+
+</body>
+</html>
