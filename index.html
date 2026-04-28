@@ -11,7 +11,7 @@ body {
   background: #cceeff;
 }
 
-/* 🧠 ล็อกทั้งหน้ากลางจริง */
+/* 🧠 จัดทั้งหน้า */
 .stage {
   height: 100vh;
   display: flex;
@@ -24,18 +24,22 @@ body {
 h1 {
   color: #0077cc;
   text-align: center;
-  margin: 10px;
+  margin-bottom: 10px;
 }
 
-/* 🎯 กล่องรูป/วิดีโอ (กลางจริง) */
-.center {
+/* 🎯 SLOT FIX (สำคัญที่สุด) */
+.media-slot {
+  width: 200px;
+  height: 200px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 220px;
+
+  margin: 10px 0;
 }
 
-/* 🖼️ + 🎥 */
+/* 🖼️ + 🎥 อยู่ใน slot เดียวกัน */
 #mainImage,
 #catDance {
   width: 200px;
@@ -49,10 +53,10 @@ h1 {
 
 /* 🔘 ปุ่ม */
 .buttons {
-  margin-top: 20px;
   position: relative;
   width: 300px;
   height: 100px;
+  margin-top: 10px;
 }
 
 button {
@@ -60,7 +64,6 @@ button {
   border: none;
   border-radius: 10px;
   position: absolute;
-  cursor: pointer;
 }
 
 #yesBtn {
@@ -76,10 +79,9 @@ button {
 }
 
 #result {
-  margin-top: 15px;
+  margin-top: 10px;
   font-size: 20px;
   color: #0077cc;
-  text-align: center;
 }
 </style>
 </head>
@@ -94,16 +96,17 @@ button {
     tomorrow at 8 PM 🎬
   </h1>
 
-  <!-- 🎯 รูป/วิดีโออยู่กลางจริง -->
-  <div class="center">
+  <!-- 🎯 SLOT เดียว = ไม่ทับแน่นอน -->
+  <div class="media-slot">
+
     <img id="mainImage" src="your-image.jpg">
 
     <video id="catDance" loop muted playsinline>
       <source src="scuba-cat.mp4" type="video/mp4">
     </video>
+
   </div>
 
-  <!-- 🔘 ปุ่ม -->
   <div class="buttons">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
     <button id="noBtn">No 😭</button>
@@ -113,19 +116,16 @@ button {
 
 </div>
 
-<!-- 🔊 เสียง -->
 <audio id="yesSound" src="yes.mp3"></audio>
 <audio id="noSound" src="no.mp3"></audio>
 <audio id="scubaMusic" src="scuba.mp3" loop></audio>
 
 <script>
 const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
 const area = document.querySelector(".buttons");
 
 let noClick = 0;
 
-// ❌ No หนี
 noBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -148,7 +148,7 @@ noBtn.addEventListener("click", (e) => {
   noBtn.style.left = Math.random() * maxX + "px";
 });
 
-// ✅ YES → swap
+// ✅ YES → swap ใน slot เดียว
 function sayYes() {
   document.getElementById("yesSound").play();
 
@@ -159,10 +159,8 @@ function sayYes() {
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow 🎬";
 
-  // 🖼️ ซ่อนรูป
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 โชว์วิดีโอแทน
   const v = document.getElementById("catDance");
   v.style.display = "block";
   v.currentTime = 0;
