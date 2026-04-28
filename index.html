@@ -12,9 +12,6 @@ body {
   background: #cceeff;
   height: 100vh;
   overflow: hidden;
-
-  /* ✅ สำคัญ: ทำให้ layout อ้างอิงทั้งหน้า */
-  position: relative;
 }
 
 .container {
@@ -32,20 +29,21 @@ h1 {
   margin: 15px 0;
 }
 
-/* 🎥 VIDEO (CENTER FIXED 100%) */
+/* 🎥 FIXED CENTER VIDEO (100% CENTER SCREEN) */
 #catDance {
   width: 240px;
   display: none;
   border-radius: 12px;
 
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-
   transform: translate(-50%, -50%);
-  z-index: 10;
+
+  z-index: 9999;
 }
 
+/* buttons */
 .buttons {
   position: relative;
   height: 300px;
@@ -179,7 +177,7 @@ function sayYes() {
 
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 show video centered
+  // 🎥 show centered video
   video.style.display = "block";
   video.currentTime = 0;
   video.play();
