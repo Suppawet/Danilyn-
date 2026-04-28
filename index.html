@@ -23,7 +23,6 @@ h1 {
   padding: 0 20px;
 }
 
-/* 🔥 สำคัญ: ทำให้ปุ่มหนีในกรอบนี้ */
 .buttons {
   position: relative;
   height: 300px;
@@ -81,9 +80,10 @@ button {
 
   <div id="result"></div>
 
-  <!-- 🔊 เสียง -->
-  <audio id="yesSound" src="https://www.myinstants.com/media/sounds/yes-yes-yes.mp3"></audio>
-  <audio id="noSound" src="https://www.myinstants.com/media/sounds/please-speed.mp3"></audio>
+  <!-- 🔊 เสียง (เวอร์ชันมีม) -->
+  <audio id="yesSound" src="https://www.myinstants.com/media/sounds/yes-yes-yes-yes.mp3"></audio>
+  <audio id="noSound" src="https://www.myinstants.com/media/sounds/speed-please.mp3"></audio>
+
 </div>
 
 <script>
@@ -94,7 +94,7 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const area = document.getElementById("btnArea");
 
-// ❌ ปุ่ม No หนี (แต่ไม่หาย)
+// ❌ ปุ่ม No หนี (เฉพาะตอนกด)
 function moveNo() {
   const maxX = area.clientWidth - noBtn.offsetWidth;
   const maxY = area.clientHeight - noBtn.offsetHeight;
@@ -106,10 +106,10 @@ function moveNo() {
   noBtn.style.top = y + "px";
 }
 
-noBtn.addEventListener("mouseover", moveNo);
+// ❌ กด No → หนี + เสียง + ง้อ
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault(); // กันกดทัน
 
-// ❌ กด No → เสียง + ง้อ + Yes ใหญ่ขึ้น
-noBtn.addEventListener("click", () => {
   document.getElementById("noSound").play();
 
   noClickCount++;
@@ -126,10 +126,12 @@ noBtn.addEventListener("click", () => {
   document.getElementById("question").innerText =
     messages[Math.min(noClickCount, messages.length - 1)];
 
+  // ขยาย Yes
   yesSize += 0.3;
   yesBtn.style.transform = `scale(${yesSize})`;
 
-  moveNo(); // หนีทันทีตอนกด
+  // หนีหลังจากกด
+  setTimeout(moveNo, 50);
 });
 
 // ✅ กด Yes
