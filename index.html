@@ -8,49 +8,49 @@
 body {
   margin: 0;
   font-family: Arial;
-  text-align: center;
   background: #cceeff;
+
+  /* 🔥 สำคัญที่สุด: ทำทั้งหน้าเป็น flex center */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   height: 100vh;
   overflow: hidden;
 }
 
-/* 🧩 container หลัก */
-.container {
-  margin-top: 20px;
-}
-
 h1 {
   color: #0077cc;
-  padding: 0 20px;
+  text-align: center;
+  padding: 10px;
 }
 
-/* 🎯 กลางจอแบบแท้ (สำคัญที่สุด) */
+/* 🎯 media อยู่กลางจริง 100% */
 .media-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  margin: 15px 0;
   height: 220px;
 }
 
-/* 🖼️ รูป + 🎥 วิดีโอ */
 #mainImage,
 #catDance {
   width: 200px;
   border-radius: 15px;
 }
 
-/* 🎥 วิดีโอเริ่มซ่อน */
+/* 🎥 ซ่อนวิดีโอ */
 #catDance {
   display: none;
 }
 
+/* ปุ่ม */
 .buttons {
-  position: relative;
-  height: 300px;
-  width: 100%;
   margin-top: 20px;
+  position: relative;
+  width: 300px;
+  height: 120px;
 }
 
 button {
@@ -60,26 +60,23 @@ button {
   border-radius: 10px;
   cursor: pointer;
   position: absolute;
-  transition: 0.2s;
 }
 
 #yesBtn {
   background: #28a745;
   color: white;
-  left: 35%;
-  top: 50%;
+  left: 0;
 }
 
 #noBtn {
   background: #dc3545;
   color: white;
-  left: 55%;
-  top: 50%;
+  right: 0;
 }
 
 #result {
-  margin-top: 20px;
-  font-size: 24px;
+  margin-top: 15px;
+  font-size: 22px;
   color: #0077cc;
   font-weight: bold;
 }
@@ -88,105 +85,77 @@ button {
 
 <body>
 
-<div class="container">
-  <h1 id="question">
-    You are invited to watch a movie with <br>
-    <b>Namo Suppawet</b> <br>
-    tomorrow at 8 PM 🎬
-  </h1>
+<h1 id="question">
+You are invited to watch a movie with <br>
+<b>Namo Suppawet</b> <br>
+tomorrow at 8 PM 🎬
+</h1>
 
-  <!-- 🎯 media center box -->
-  <div class="media-box">
+<!-- 🎯 กลางจริง -->
+<div class="media-box">
+  <img id="mainImage" src="your-image.jpg">
 
-    <img id="mainImage" src="your-image.jpg">
-
-    <video id="catDance" loop muted playsinline>
-      <source src="scuba-cat.mp4" type="video/mp4">
-    </video>
-
-  </div>
-
-  <div class="buttons" id="btnArea">
-    <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
-    <button id="noBtn">No 😭</button>
-  </div>
-
-  <div id="result"></div>
-
-  <!-- 🔊 เสียง -->
-  <audio id="yesSound" src="yes.mp3"></audio>
-  <audio id="noSound" src="no.mp3"></audio>
-  <audio id="scubaMusic" src="scuba.mp3" loop></audio>
-
+  <video id="catDance" loop muted playsinline>
+    <source src="scuba-cat.mp4" type="video/mp4">
+  </video>
 </div>
 
-<script>
-let yesSize = 1;
-let noClickCount = 0;
+<div class="buttons">
+  <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
+  <button id="noBtn">No 😭</button>
+</div>
 
+<div id="result"></div>
+
+<audio id="yesSound" src="yes.mp3"></audio>
+<audio id="noSound" src="no.mp3"></audio>
+<audio id="scubaMusic" src="scuba.mp3" loop></audio>
+
+<script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const area = document.getElementById("btnArea");
+const area = document.querySelector(".buttons");
 
-function moveNo() {
-  const maxX = area.clientWidth - noBtn.offsetWidth;
-  const maxY = area.clientHeight - noBtn.offsetHeight;
-
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
-}
+let noClick = 0;
 
 noBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  let sound = document.getElementById("noSound");
-  sound.currentTime = 0;
-  sound.play();
-
-  noClickCount++;
+  document.getElementById("noSound").play();
 
   const messages = [
     "Really? 🥺",
     "Think again 😭",
-    "Come on, please...",
-    "I really want to go with you 😢",
-    "Just say yes 💔",
-    "PLEASE 😭💙"
+    "Come on...",
+    "Please 😢",
+    "Just say yes 💔"
   ];
 
   document.getElementById("question").innerText =
-    messages[Math.min(noClickCount, messages.length - 1)];
+    messages[Math.min(noClick, messages.length - 1)];
 
-  yesSize += 0.3;
-  yesBtn.style.transform = `scale(${yesSize})`;
+  noClick++;
 
-  setTimeout(moveNo, 50);
+  const maxX = area.clientWidth - noBtn.offsetWidth;
+  noBtn.style.left = Math.random() * maxX + "px";
 });
 
-// ✅ YES → swap image → video
 function sayYes() {
-  let yesSound = document.getElementById("yesSound");
-  let music = document.getElementById("scubaMusic");
-
-  yesSound.currentTime = 0;
-  yesSound.play();
+  document.getElementById("yesSound").play();
 
   setTimeout(() => {
-    music.currentTime = 0;
-    music.play();
-  }, 800);
+    document.getElementById("scubaMusic").play();
+  }, 500);
 
   document.getElementById("result").innerText =
-    "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
+    "YAYYY 💙 See you tomorrow 🎬";
 
-  // 🖼️ hide image
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 show video in same position
-  const video = document.getElementById("catDance");
-  video.style.display = "block";
-  video.currentTime = 0;
-  video.play();
+  const v = document.getElementById("catDance");
+  v.style.display = "block";
+  v.currentTime = 0;
+  v.play();
 }
 </script>
 
