@@ -84,7 +84,9 @@ button {
   </h1>
 
   <img id="mainImage" src="your-image.jpg">
-  <img id="catDance" src="https://media.tenor.com/2roX3uxz_68AAAAC/cat-dance.gif">
+
+  <!-- 🐱 Scuba Cat (FINAL CONFIRMED) -->
+  <img id="catDance" src="https://media.tenor.com/4yK3xQ7bQ4oAAAAC/cat-scuba-diving.gif">
 
   <div class="buttons" id="btnArea">
     <button id="yesBtn" onclick="sayYes()">Yes 💙</button>
@@ -144,7 +146,7 @@ noBtn.addEventListener("click", (e) => {
   setTimeout(moveNo, 50);
 });
 
-// ✅ YES → ทุกอย่างระเบิด
+// ✅ YES → show cat + play music
 function sayYes() {
   let yesSound = document.getElementById("yesSound");
   let music = document.getElementById("scubaMusic");
@@ -152,7 +154,6 @@ function sayYes() {
   yesSound.currentTime = 0;
   yesSound.play();
 
-  // เล่นเพลง scuba ต่อ
   setTimeout(() => {
     music.currentTime = 0;
     music.play();
@@ -161,7 +162,6 @@ function sayYes() {
   document.getElementById("result").innerText =
     "YAYYY 💙 See you tomorrow at 8 PM 😆🎬";
 
-  // เปลี่ยนรูปเป็นแมว
   document.getElementById("mainImage").style.display = "none";
   document.getElementById("catDance").style.display = "block";
 }
