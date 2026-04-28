@@ -29,11 +29,16 @@ h1 {
   margin: 15px 0;
 }
 
-/* 🎥 วิดีโอแมว */
+/* 🎥 Scuba Cat Video (CENTER FIXED) */
 #catDance {
-  width: 220px;
+  width: 240px;
   display: none;
   border-radius: 12px;
+
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .buttons {
@@ -99,7 +104,7 @@ button {
 
   <div id="result"></div>
 
-  <!-- 🔊 เสียง (ของเธอเอง) -->
+  <!-- 🔊 เสียง -->
   <audio id="yesSound" src="yes.mp3"></audio>
   <audio id="noSound" src="no.mp3"></audio>
   <audio id="scubaMusic" src="scuba.mp3" loop></audio>
@@ -154,6 +159,7 @@ noBtn.addEventListener("click", (e) => {
 function sayYes() {
   let yesSound = document.getElementById("yesSound");
   let music = document.getElementById("scubaMusic");
+  let video = document.getElementById("catDance");
 
   yesSound.currentTime = 0;
   yesSound.play();
@@ -168,11 +174,8 @@ function sayYes() {
 
   document.getElementById("mainImage").style.display = "none";
 
-  // 🎥 show video
-  document.getElementById("catDance").style.display = "block";
-
-  // 🔁 restart video every time (กันค้าง)
-  const video = document.getElementById("catDance");
+  // 🎥 show + reset video
+  video.style.display = "block";
   video.currentTime = 0;
   video.play();
 }
